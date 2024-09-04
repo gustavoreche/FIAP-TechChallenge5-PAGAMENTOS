@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  db-pagamentos:
+    image: postgres:16.2
+    container_name: "containerBancoDeDadosPagamentos"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    volumes:
+      - ./scriptBancoDeDados:/docker-entrypoint-initdb.d
+    ports:
+      - "5436:5432"
+    restart: always
+  app-pagamentos:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    container_name: app-sistema-pagamentos
+    environment:
+      POSTGRES_HOST: db-pagamentos:5432
+      JWT_SECRET: "segredoMaisSeguroDoMundo"
+    ports:
+      - "8083:8083"
+    depends_on:
+      - db-pagamentos
+    restart: always
