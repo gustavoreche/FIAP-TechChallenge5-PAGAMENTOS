@@ -36,7 +36,7 @@ public class PagamentoController {
 		final var realizou = this.service.realiza(token);
 		if(realizou) {
 			return ResponseEntity
-					.status(HttpStatus.OK)
+					.status(HttpStatus.CREATED)
 					.build();
 		}
 		return ResponseEntity
